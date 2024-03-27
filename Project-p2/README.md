@@ -53,6 +53,7 @@ _Llama-2_
 (Fine-tuning with PEFT)[https://huggingface.co/blog/llama2#fine-tuning-with-peft]
 (Meta Examples and recipes for Llama model)[https://github.com/facebookresearch/llama-recipes/tree/main]
 (The EASIEST way to finetune LLAMA-v2 on local machine!)[https://www.youtube.com/watch?v=3fsn19OI_C8&ab_channel=AbhishekThakur]
+(Fine-tune Llama-2 in colab with QLoRA)[https://colab.research.google.com/drive/1PEQyJO1-f6j0S_XJ8DV50NkpzasXkrzd?usp=sharing]
 
 ### Deploying
 
