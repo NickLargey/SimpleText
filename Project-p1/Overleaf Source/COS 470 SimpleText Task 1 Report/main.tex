@@ -1,0 +1,83 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{graphicx}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+\usepackage[
+style=numeric,
+sorting=none
+]{biblatex}
+\addbibresource{references.bib}
+%
+\begin{document}
+%
+\title{SimpleText Task 1 Report}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{Ben Gaudreau \and
+Gabrielle Akers}
+%
+\authorrunning{B. Gaudreau \and G. Akers}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{University of Southern Maine, Portland ME 04101, USA}
+%
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+Given the task of text simplification and passage retrieval as outlined in the SimpleText@CLEF 2024 Lab, we summarize the challenges of text simplification. We then discuss previous models submitted to earlier iterations of the SimpleText Lab, and analyze their structure, along with their strengths and weaknesses. With this information, we then propose a model that is both capable of providing decent results while also being technically feasible as relatively new students of machine learning topics.
+\end{abstract}
+%
+%
+%
+\section{The Task At Hand} \label{intro}
+The SimpleText@CLEF 2024 Lab is focused on the problem of simplifying academic resources for general audiences. In a time where the Internet has allowed vast quantities of information to reach the public, the complex language and concepts of scientific research continues to be a limiting factor\cite{clef}. This lab explores the methods by which these texts may be simplified and rewritten for greater accessibility.
+
+Task 1 of the SimpleText Lab presents a deceptively tricky question: \textbf{What is in (or out)?} Given a topic and a query, the model must provide a relevant summary from abstracts in the corpus\cite{clef}. The accuracy, complexity, and credibility of each referenced resource plays a factor in the overall quality of the result.
+
+The SimpleText Lab has been iterated upon several times over the last few years, providing information that will be of use when constructing a model to perform the task. These past examples will be discussed in Section \ref{past}, and our approach with respect to previous iterations will be detailed in Section \ref{approach}.
+
+\section{Previous Approaches} \label{past}
+Many models from previous iterations of this lab have utilized natural language processing (NLP) models such as BERT\cite{amsterdam, maine}. While these have historically performed rather well, other submissions in previous years have opted to use other models, to varying levels of success. Most notably, the models provided by Elsevier\cite{elsevier} in 2023, utilizing generative pseudo-labeling (GPL), showed stronger results compared to those that did not.
+
+Other NLP approaches not specific to the SimpleText Lab have demonstrated other methods of passage selection that may be of use when consider a new model. For example, techniques implementing control tokens in a model\cite{control} can provide additional context to a retrieved passage's overall complexity, which could play a role in determining the better of two similarly relevant passages. Similarly, methods of dense passage retrieval (DPR) can be incorporated into a neural models to further improve the speed and accuracy of retrieval over traditional methods\cite{dense}.
+
+\begin{table}
+\caption{Various strengths and weaknesses of models as they relate to the task.}\label{tab1}
+\begin{tabular}{|p{2cm}|p{5cm}|p{5cm}|}
+\hline
+Model & Strengths & Weaknesses\\
+\hline
+Bi-encoder models\cite{bert} & Easy to implement, numerous fine-tuned models for various tasks & Varied performance across different testing conditions\\
+\hline
+GPL\cite{elsevier} & Strong performance across different testing conditions & Generative inaccuracy present, more difficult to implement\\
+\hline
+ChatGPT\cite{simplification} & Can perform simplifications and translations together, can be implemented on top of another model & Requires careful pre-processing, possibility of hallucinations\\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Our Approach} \label{approach}
+Our proposed model will attempt to incorporate elements of bi-encoder models alongside other techniques to counteract the previously mentioned limitations. Specifically, a ColBERT model\cite{colbert} used alongside DPR should provide a solid foundation upon which further improvements may be made. Our decision comes from our relative inexperience in programming machine learning tasks, so we plan to use this as an opportunity to develop our skills in this area of computer science.
+
+The methods by which we will compensate for the inaccuracies displayed by bi- and cross-encoder models over subsets of the testing data, as demonstrated in the results of last year's SimpleText submissions\cite{clef}, is currently unclear. We will look into solutions as we begin our development of the model.
+
+\section{Conclusion} \label{conclusion}
+In this report, we have laid out the task required of our model as stated by the SimpleText@CLEF 2024 Lab. By analyzing prior attempts at this task, we have furthered our own understanding of the problem and our methods of solving it. Ultimately, we have decided to build off existing work with bi- and cross-encoders and apply them in different structures in the hopes of achieving a better result. Regardless whether or not we succeed in this endeavor, the process of working through this lab will have developed our understanding of machine learning topics overall.
+%
+% ---- Bibliography ----
+%
+\printbibliography
+\end{document}
