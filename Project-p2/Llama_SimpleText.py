@@ -14,7 +14,6 @@ import transformers
 import torch
 import pandas as pd
 from sklearn.model_selection import train_test_split
-nltk.download('punkt')
 
 train_df = pd.read_csv("SimpleText_data/simpletext_task3_train.tsv", sep='\t')
 ref_df = pd.read_csv("SimpleText_data/simpletext_task3_qrels.tsv", sep='\t')
@@ -35,11 +34,13 @@ if torch.cuda.is_available():
     print("cuda")
 else:
     torch.set_default_device("cpu")
+
 model = "meta-llama/Llama-2-7b-chat-hf"
-# model = "meta-llama/Llama-2-13b-chat-hf"
+
 tokenizer = AutoTokenizer.from_pretrained(model)
+
 pipeline = transformers.pipeline(
-    "text-generation",
+    "summarization",
     model=model,
     torch_dtype=torch.float16,
     device_map="auto",
@@ -61,8 +62,11 @@ sari = evaluate.load("sari")
 # sari_score = sari.compute(
 #     sources=sources, predictions=predictions, references=references)
 
-system_message = "You are Yan Lecun"
-user_message = "You want to insert n items in a queue, and then remove them one by one. However, the only data structure that you can use is Stack. How would you do it? Just explain your approach."
+
+
+
+system_message = ["You are Yan Lecun", "I'm a 9th grade science teacher, please summarize and simplify this prompt so that my students will understand it."]
+user_message = ["You want to insert n items in a queue, and then remove them one by one. However, the only data structure that you can use is Stack. How would you do it? Just explain your approach."]
 
 prompt = "<s>[INST]<<SYS>>" + system_message + \
     "<</SYS>>\n" + user_message + "[/INST]</s>"
