@@ -118,7 +118,7 @@ G08.1_2889740224_5	Smart contracts can command large amounts of cryptocurrency.
 G08.1_2889740224_6	Developers and auditors need frameworks to detect security vulnerabilities.
 G08.1_2889740224_7	Vandal is a security analysis framework for Ethereum smart contracts.
 G08.1_2889740224_8	Vandal converts Ethereum Virtual Machine bytecode to semantic logic relations.
-G08.1_2889740224_9	Users can express security analyses in the Soufflé language.
+G08.1_2889740224_9	Users can express security analyses in the Soufflï¿½ language.
 G08.1_2889740235_1	Vandal is both efficient (95% accuracy), fast (141k in 4.15 s) and robust. It outperforms the state of the art tools like Oyente, EthIR, Mythril, and Rattle
 G08.1_2895247503_1	One of the most powerful potential adversaries is the country of China, which has expressed adversarial positions regarding the cryptocurrency and demonstrated powerful capabilities to influence it.
 G09.1_754200012_1	Image tampering has become a serious problem with the advancement of digital techniques.
@@ -364,7 +364,7 @@ G07.1_2950010073_1	The online misinformation could cause public panic and seriou
 G07.1_2950010073_2	The goal of misinformation containment is to limit the spread of misinformation in online social networks by launching campaigns to counter misinformation.
 G07.1_2950010073_3	We present the first analysis of the misinformation containment problem with a random number of cascades (people observe the actions of others and then make the same choice) allowed.
 G07.1_2950010073_4	First, we provide a diffusion model and introduce an important concept called as cascade priority.
-G07.1_2950010073_5	Second, we show that the misinformation containment problem cannot be approximated within a factor of ©(2log1õn4) in polynomial time unless $NP \subseteq DTIME(n^{\polylog{n}})$
+G07.1_2950010073_5	Second, we show that the misinformation containment problem cannot be approximated within a factor of ï¿½(2log1ï¿½n4) in polynomial time unless $NP \subseteq DTIME(n^{\polylog{n}})$
 G07.1_2950010073_6	Third, we introduce several types of cascade priority that are frequently seen in social networks.
 G07.1_2950010073_7	Finally, we design algorithms for solving the misinformation containment problem.
 G07.1_2950010073_8	The proposed algorithm is effective and shows encouraging results.
