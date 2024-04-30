@@ -37,32 +37,27 @@ login(token=token)
 # else:
 #     torch.set_default_device("cpu")
 
-Llama = "/home/nicholas.largey/Desktop/code/Llama/llama-2-7b/weights"
+model_id = "meta-llama/Meta-Llama-3-70B-Instruct"
 # model = AutoModelForCausalLM.from_pretrained(Llama, device_map='auto',torch_dtype=torch.float16)
-tokenizer = AutoTokenizer.from_pretrained(Llama, use_fast=True, truncation=True)
+tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=True, truncation=True)
 tokenizer.add_special_tokens({"pad_token":"<pad>"})
 tokenizer.padding_side = 'left'
 
-train_df = pd.read_csv("SimpleText_data/simpletext_task3_train.tsv", sep='\t')
-ref_df = pd.read_csv("SimpleText_data/simpletext_task3_qrels.tsv", sep='\t')
+X = pd.read_json('task 3/train/simpletext_task3_2024_train_snt_source.json')
+y = pd.read_json('task 3/train/simpletext_task3_2024_train_snt_reference.json')
 
-merged_df = pd.merge(train_df, ref_df, on='snt_id')
+merge_df = pd.merge(X, y, on='snt_id')
 
-# Merge to drop any missing values
-df = merged_df[['snt_id', 'source_snt', 'simplified_snt']]
+print('Before: ', merge_df.shape)
 
-X = df.drop('snt_id', axis=1)
-
-X_train, X_val = train_test_split(X, test_size=0.2)
-
-X_src = X_train['source_snt'].tolist()
-X_ctx = X_train['simplified_snt'].tolist()
+drop_df = merge_df.drop_duplicates(subset='snt_id')
+df = drop_df.drop(["query_id", "query_text", "doc_id"], axis=1)
 
 
 
 def format_instruction(sample):
     return f"""### Instruction:
-        Summarize and simplify the text in order to maximize understanding while maintaining the original meaning. The output should maximize desired scores on FKGL, SARI, ROUGE and BLEU metrics for a student in 9th grade.
+        Summarize and simplify the text in order to maximize understanding while maintaining the original meaning. The output should maximize desired scores on FKGL, SARI, ROUGE and BLEU metrics for a student in 10th grade.
 
         ### Input:
         {sample['text']}
@@ -76,14 +71,14 @@ def label(data):
     return {'text': data['source_snt'], 'labels': data['simplified_snt']}
 
 def tokenize_format(data):
-    tokenized = tokenizer(data['text'], truncation=True, max_length=256)
+    tokenized = tokenizer(data['text'], truncation=True, max_length=4096)
     return tokenized
 
 
 ################ PREPROCESS DATA ################ 
 train_df, val_df = train_test_split(df, test_size=0.2, shuffle=True)
 
-train_dataset = Dataset.from_pandas(X_train).map(label, batched=True)
+train_dataset = Dataset.from_pandas(df).map(label, batched=True)
 # train_dataset = train_dataset.map(tokenize_format, batched=True)
 
 val_dataset = Dataset.from_pandas(val_df).map(label, batched=True)
@@ -100,6 +95,10 @@ dataset = DatasetDict({
     'validation': val_dataset,
 })
 
+# features = Features({'snt_id': Value('string'),'source_snt': Value('string'),'simplified_snt': Value('string') })
+
+# train_ds = Dataset.from_pandas(df.head(10), features=features, preserve_index=False).with_format("torch")
+# train_dl = DataLoader(train_ds, batch_size=8, shuffle=False)
 
 compute_dtype = getattr(torch, "float16")
 bnb_config = BitsAndBytesConfig(
@@ -109,7 +108,7 @@ bnb_config = BitsAndBytesConfig(
         bnb_4bit_use_double_quant=True,
 )
 model = AutoModelForCausalLM.from_pretrained(
-        Llama, quantization_config=bnb_config, device_map="auto"
+        model_id, quantization_config=bnb_config, device_map="auto"
 )
 
 #Resize the embeddings
@@ -131,8 +130,8 @@ peft_config = LoraConfig(
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, peft_config)
 
-user_message = X_src[:5]
-references = X_ctx[:5]
+# user_message = X_src[:5]
+# references = X_ctx[:5]
 
 training_arguments = TrainingArguments(
         output_dir="./results",
@@ -172,4 +171,4 @@ trainer = SFTTrainer(
 
 trainer.train()
 
-trainer.save_model("llama-2-7b-SimpleText")
+trainer.save_model("llama-3-70b-SimpleText")
