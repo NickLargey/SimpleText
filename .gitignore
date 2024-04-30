@@ -1,9 +1,9 @@
 .env
 *.json
-Project-p2/results/*
-Project-p2/orca-2-7b/*
-Project-p2/SimpleText_data/*
-Project-p2/llama-2-7b-SimpleText/*
-Project-p3/results/*
-Project-p3/orca-2-7b/*
-Project-p3/SimpleText_data/*
+Task_3/Project-p2/results/*
+Task_3/Project-p2/orca-2-7b/*
+Task_3/Project-p2/SimpleText_data/*
+Task_3/Project-p2/llama-2-7b-SimpleText/*
+Task_3/Project-p3/results/*
+Task_3/Project-p3/orca-2-7b/*
+Task_3/Project-p3/SimpleText_data/*

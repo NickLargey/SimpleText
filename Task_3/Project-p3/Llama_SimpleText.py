@@ -173,3 +173,54 @@ trainer = SFTTrainer(
 trainer.train()
 
 trainer.save_model("llama-2-7b-SimpleText")
+
+# system_message = """Summarize and simplify the text in order to maximize understanding while maintaining the original meaning. The output should maximize desired scores on FKGL, SARI, ROUGE and BLEU metrics for a student in 9th grade."""
+
+
+# print(predictions)
+# bleu = evaluate.load("bleu")
+# blue_results = bleu.compute(predictions=predictions, references=references)
+
+# rouge = evaluate.load('rouge')
+# for i in range(5):
+#     rouge_results = rouge.compute(predictions=predictions[i], references=references[i])
+#     print(rouge_results)
+
+# rouge_results = rouge.compute(predictions=predictions, references=references)
+
+# sari = evaluate.load("sari")
+# sources = ["About 95 species are currently accepted ."]
+# predictions = ["About 95 you now get in ."]
+# references = [["About 95 species are currently known .",
+#                "About 95 species are now accepted .", "95 species are now accepted ."]]
+# sari_score = sari.compute(
+#     sources=sources, predictions=predictions, references=references)
+
+
+# system_message = "You are teaching a science class for middle and high school students. You have been given exerpts from scientific writings, but need to simplify them for your students. Please rewrite the text in order to maximize understanding while maintaining the original meaning.Your results should maximize desired scores on FKGL, SARI, ROUGE and BLEU metrics."
+# user_message = X_list[:5]
+
+# prompt = "<s>[INST]<<SYS>>" + system_message + \
+#     "<</SYS>>\n" + user_message + "[/INST]</s>"
+
+    # Llama_pipeline = transformers.pipeline(
+    #     "summarization",
+    #     model=Llama,
+    #     tokenizer=Llama_tokenizer,
+    #     torch_dtype=torch.float16,
+    #     device_map="auto",
+    #     max_new_tokens=5000,
+    # )
+
+
+# sequences = Llama_pipeline(
+#     prompt,
+#     do_sample=True,
+#     top_k=1,
+#     num_return_sequences=1,
+#     eos_token_id=Llama_tokenizer.eos_token_id
+# )
+# # print(len(sequences))
+# for seq in sequences:
+#     print(seq)
+#     result = seq['generated_text']
