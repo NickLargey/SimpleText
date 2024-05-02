@@ -15,29 +15,29 @@ load_dotenv()
 token = os.getenv('HF_TOKEN')
 login(token=token)
 
-model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+model_id = "llama-3-8b-SimpleText-23"
 
-X = pd.read_json('task 3/train/simpletext_task3_2024_train_snt_source.json')
-y = pd.read_json('task 3/train/simpletext_task3_2024_train_snt_reference.json')
+X = pd.read_json('task 3/train/simpletext_task3_2024_train_abs_source.json')
+y = pd.read_json('task 3/train/simpletext_task3_2024_train_abs_reference.json')
 
-merge_df = pd.merge(X, y, on='snt_id')
+merge_df = pd.merge(X, y, on='abs_id')
 
-print('Before: ', merge_df.shape)
+# print('Before: ', merge_df.shape)
 
-drop_df = merge_df.drop_duplicates(subset='snt_id')
+drop_df = merge_df.drop_duplicates(subset='abs_id')
 df = drop_df.drop(["query_id", "query_text", "doc_id"], axis=1)
 
-print('After: ', df.info())
+# print('After: ', df.info())
 
-# features = Features({'snt_id': Value('string'),'source_snt': Value('string'),'simplified_snt': Value('string') })
+# features = Features({'abs_id': Value('string'),'source_abs': Value('string'),'simplified_abs': Value('string') })
 
 # train_ds = Dataset.from_pandas(df.head(10), features=features, preserve_index=False).with_format("torch")
 # train_dl = DataLoader(train_ds, batch_size=8, shuffle=False)
 
 id = []
-simplified_snts = []
-src_snt = []
-tgt_snt = []
+simplified_abs = []
+src_abs = []
+tgt_abs = []
 
 pipeline = transformers.pipeline(
     "text-generation",
@@ -49,8 +49,8 @@ tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
 
 for idx, data in df.iterrows():
   # for idx in batch:
-    src = data['source_snt']
-    tgt = data['simplified_snt']
+    src = data['source_abs']
+    tgt = data['simplified_abs']
     
     messages = [
         {"role": "system", "content": """Simplify this text for english speaking students in grades 9 and 10. 
@@ -82,10 +82,10 @@ for idx, data in df.iterrows():
     
     result = outputs[0]["generated_text"][len(prompt):]
 
-    id.append(data['snt_id'])
-    simplified_snts.append(result)
-    src_snt.append(src)
-    tgt_snt.append(tgt)
+    id.append(data['abs_id'])
+    simplified_abs.append(result)
+    src_abs.append(src)
+    tgt_abs.append(tgt)
 
 
 sari = load("sari")
@@ -94,18 +94,18 @@ bleu = load("bleu")
 
 output_df = pd.DataFrame()
 
-output_df['snt_id'] = id
-output_df['simplified_snt'] = simplified_snts
-output_df['source_snt'] = src_snt
-output_df['target_snt'] = tgt_snt
+output_df['abs_id'] = id
+output_df['simplified_abs'] = simplified_abs
+output_df['source_abs'] = src_abs
+output_df['target_abs'] = tgt_abs
 
-sources = output_df['source_snt'].tolist()
-predictions = output_df['simplified_snt'].tolist()
-references = output_df['target_snt'].tolist()
+sources = output_df['source_abs'].tolist()
+predictions = output_df['simplified_abs'].tolist()
+references = output_df['target_abs'].tolist()
 
 bleu_results = bleu.compute(predictions=predictions, references=references)
 rouge_results = rouge.compute(predictions=predictions, references=references)
-sari_results = sari.compute(sources=src_snt, predictions=simplified_snts, references=[tgt_snt])
+sari_results = sari.compute(sources=src_abs, predictions=simplified_abs, references=[tgt_abs])
 
 output_df['BLEU'] = bleu_results
 output_df['ROUGE'] = rouge_results
