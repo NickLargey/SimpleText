@@ -1,5 +1,6 @@
 .env
 *.json
+
 Project-p2/results/*
 Project-p2/orca-2-7b/*
 Project-p2/SimpleText_data/*
@@ -9,3 +10,5 @@ Project-p3/orca-2-7b/*
 Project-p3/SimpleText_data/*
 Project-p3/Meta-Llama-3-8B/*
 Project-p3/Meta-Llama-3-8B-Instruct/*
+
+!Project-p3/simpletext_output*.json
